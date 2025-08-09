@@ -1,80 +1,99 @@
-<!-- README.md -->
-# Brute-Force Protected Login Application
 
-## Overview
-A full-stack login application with brute-force protection mechanisms, implementing both user-level and IP-level lockout systems.
-Note: Screenshots (attached)
-site : https://loginradius-assignment-frontend-main.onrender.com
-backedn: https://loginradius-assignment.onrender.com
+The Architecture and Working
 
 
-## Accounts
-admin@example.com , admin@1234 (password)
-admin1@example.com, admin@1234(password)
+Go to Doc : https://docs.google.com/document/d/1ux7_NTAnfYEpJhIE3dMyn-29DuY46TVGYBiwVh2gT-4/edit?tab=t.0
+Schema Tables
 
-## Features 
+Exam        
+ (ExamId, Slots, name,   applicants , start & ExpiryDate)
 
-- User authentication with email and password
-- User-level lockout: 5 failed attempts in 5 minutes → 15-minute suspension
-- IP-level lockout: 100 failed attempts in 5 minutes → IP blocked
-- Real-time feedback for blocked/suspended attempts
-- MongoDB for persistent data storage
-- React frontend with Vite
-- Node.js/Express backend
-- Unit tests for rate-limiting logic
+Questions a
+( questionId, name, description , subject, examId,questionScore(for      analytics),correctAnswer,
+ options)
 
-## Setup Instructions
-1. Clone the repository:
-```bash
-git clone <repository-url>
-```
-2. Install dependencies:
-```bash
-cd client && npm install
-cd ../server && npm install
-```
-3. Set up environment variables:
-- Create a `.env` file in the `server` directory
-- Add `MONGO_URI=mongodb+srv://a1234:FlONFhajTk9ANyqd@cluster0.jal7nac.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0`
-- Create a `.env` file in the `client` directory
-- Add `VITE_LOGIN_URL=http://localhost:5000/api/auth/login` or backedn url path 
-4. Start the application:
-```bash
-cd server && npm start
-cd client && npm run dev
-```
+Attempt (attemptId,studentid,examid,answers,scorepercentile)
+Student ...student details
 
-## Architecture and Design Decisions
-- **Frontend**: React with Vite for fast development and optimized builds.
-- **Backend**: Node.js/Express for simplicity and scalability.
-- **Database**: MongoDB for flexible schema and fast writes.
-- **Security**: Bcrypt for password hashing, rate-limiting middleware for brute-force protection.
-- **Rate Limiting**: Custom middleware tracks failed attempts in MongoDB, with time-based cleanup.
-- **Deployment**: Render for free hosting, with separate frontend and backend services.
 
-## Hosting Platform
-- **Platform**: Render (https://render.com)
-- **URL**: [To be provided upon deployment]
-- **Configuration**:
-  - Frontend: Static site hosting
-  - Backend: Node.js service with MongoDB connection
-  - Environment variables set in Render dashboard
 
-## AI Usage Report
-- **AI Tools Used**: Deepseek and grok used for code and struture tips.
-- **AI-Generated Code**: ~80% of the code (basic React components, Express boilerplate, MongoDB schemas).
-- **Fine-Tuning**: ~2+ hours spent refining AI-generated code (rate-limiting logic, error handling, tests).
-- **Manual Code**: Custom middleware, test cases, and deployment scripts were manually written. Also review of code , debugging etc
-```
+Working Q and A
 
-## 3. Deployment
-- Deployed on Render (URL to be provided upon deployment).
-- Frontend: Static site hosting with Vite build.
-- Backend: Node.js service connected to MongoDB Atlas.
-- Environment variables configured in Render dashboard.
 
-## AI Usage Report
-- **AI Tools**: GitHub Copilot (code suggestions), ChatGPT (architecture planning).
-- **AI Contribution**: ~30% (boilerplate code, basic components, schemas).
-- **Manual Work**: ~2 hours refining AI code, writing custom logic (rate-limiting, tests, deployment).
-- **Non-AI Parts**: Middleware, unit tests, deployment scripts, and final debugging.
+
+Problem 1: 1 lakh + students can take the exam at the same time /day.
+Solution: 
+We have asked to submit answers in group of 5 questions in single time using /submitanswers,
+Eventually it will be scored and saved on backend in Attempt answers as json;
+
+ 1lakh concurrent request will be reduced to :
+         
+ best case (1 lakh/ time to solve 5 questions)  i.e 1 lakh / 120s = 2000 to 3000 concurrent request approx
+	 
+ worst case (1 lakh / time for retry or wait for response ) i.e 1 lakh / 20 s = 5000 to 6000 concurrent request approx.
+          
+Therefore we can use  :
+		
+1) Server less (lambda or functions ) : which has ability to auto scale and reduce  (eg Azure Ep1 serverless functions  100 to 130 $ per instance)
+		
+2) EC2 or any similar cloud :  similar auto scalability configuration (eg Amazon    100 to 150 $ per instance)
+
+Database I have preferred for Mongo as its good for high traffic ,and indexes on id and necessary fields
+
+Pro's : Highly Scalable as per need not needed every time, saves cost and reduces complexity
+Cons's : Cant find any right now
+
+Check in the project src/models and image
+
+
+Problem 2: Publishing results:
+
+
+Solution : 
+Created Functions which can be triggered with admin Api's or cron job as soon as Exam is expired (parameter of Exam table).
+
+1) Function will  start calculating total score as soon as the applicant  test is    completed.We also calculate section/subject wise scores as per need.
+ 2) Percentile can be calculated slot wise or after Exam concluded for all, depends on need ,and it's decided based on the above score of the applicant.
+We also calculate percentile for subject wise using the same method.
+
+We can get the result /leaderboard api*
+		
+
+Pros: Cpu Heavy Task , Can be done Asyn after test, has no major affect on system. 
+      Flexible with needs
+
+Cons: Cant find more 
+
+
+Check in the project src/services  and image
+
+
+
+
+
+
+Problem 3: Future Ranking and prediction
+Solution:	
+We can use the following 
+		
+Best Way : YoY Analytics of data and use Data Analytics & ML  based on score in Subjects and some user history (12 th score, graduation scores , traits).
+               
+ Easy  Way : Use Predictability in Range of +- 10 percent Range
+
+                
+Mid Way: Ask to take few more quiz 30 min for each section (increase level and see how he performs), and give him his painpoint feedback and result based on test . 
+
+
+Not Done only Ideaology Can build Easy and Mid 
+
+
+
+
+		
+
+
+
+
+		
+
+
