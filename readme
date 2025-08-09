@@ -1,0 +1,80 @@
+<!-- README.md -->
+# Brute-Force Protected Login Application
+
+## Overview
+A full-stack login application with brute-force protection mechanisms, implementing both user-level and IP-level lockout systems.
+Note: Screenshots (attached)
+site : https://loginradius-assignment-frontend-main.onrender.com
+backedn: https://loginradius-assignment.onrender.com
+
+
+## Accounts
+admin@example.com , admin@1234 (password)
+admin1@example.com, admin@1234(password)
+
+## Features 
+
+- User authentication with email and password
+- User-level lockout: 5 failed attempts in 5 minutes → 15-minute suspension
+- IP-level lockout: 100 failed attempts in 5 minutes → IP blocked
+- Real-time feedback for blocked/suspended attempts
+- MongoDB for persistent data storage
+- React frontend with Vite
+- Node.js/Express backend
+- Unit tests for rate-limiting logic
+
+## Setup Instructions
+1. Clone the repository:
+```bash
+git clone <repository-url>
+```
+2. Install dependencies:
+```bash
+cd client && npm install
+cd ../server && npm install
+```
+3. Set up environment variables:
+- Create a `.env` file in the `server` directory
+- Add `MONGO_URI=mongodb+srv://a1234:FlONFhajTk9ANyqd@cluster0.jal7nac.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0`
+- Create a `.env` file in the `client` directory
+- Add `VITE_LOGIN_URL=http://localhost:5000/api/auth/login` or backedn url path 
+4. Start the application:
+```bash
+cd server && npm start
+cd client && npm run dev
+```
+
+## Architecture and Design Decisions
+- **Frontend**: React with Vite for fast development and optimized builds.
+- **Backend**: Node.js/Express for simplicity and scalability.
+- **Database**: MongoDB for flexible schema and fast writes.
+- **Security**: Bcrypt for password hashing, rate-limiting middleware for brute-force protection.
+- **Rate Limiting**: Custom middleware tracks failed attempts in MongoDB, with time-based cleanup.
+- **Deployment**: Render for free hosting, with separate frontend and backend services.
+
+## Hosting Platform
+- **Platform**: Render (https://render.com)
+- **URL**: [To be provided upon deployment]
+- **Configuration**:
+  - Frontend: Static site hosting
+  - Backend: Node.js service with MongoDB connection
+  - Environment variables set in Render dashboard
+
+## AI Usage Report
+- **AI Tools Used**: Deepseek and grok used for code and struture tips.
+- **AI-Generated Code**: ~80% of the code (basic React components, Express boilerplate, MongoDB schemas).
+- **Fine-Tuning**: ~2+ hours spent refining AI-generated code (rate-limiting logic, error handling, tests).
+- **Manual Code**: Custom middleware, test cases, and deployment scripts were manually written. Also review of code , debugging etc
+```
+
+## 3. Deployment
+- Deployed on Render (URL to be provided upon deployment).
+- Frontend: Static site hosting with Vite build.
+- Backend: Node.js service connected to MongoDB Atlas.
+- Environment variables configured in Render dashboard.
+
+## AI Usage Report
+- **AI Tools**: GitHub Copilot (code suggestions), ChatGPT (architecture planning).
+- **AI Contribution**: ~30% (boilerplate code, basic components, schemas).
+- **Manual Work**: ~2 hours refining AI code, writing custom logic (rate-limiting, tests, deployment).
+- **Non-AI Parts**: Middleware, unit tests, deployment scripts, and final debugging.
