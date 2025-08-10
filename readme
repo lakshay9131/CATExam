@@ -48,6 +48,13 @@ Check in the project src/models and image
 
 Problem 2: Publishing results:
 
+Files : 
+ /routes/submitanswer.js : (/submitanswer) to submit answers and save it with individual score
+ /services/score.js ( calculateExamScores ) For suming up of question scores
+ /service/score.js  ( calculateAllRanks ) For Percentile and Scoring Subject Wise and Normal
+ /routes/submitanswer.js : (/leaderboard) For leader board of particular exam (offcourrse anwer would only contain few info of users as well like rank score and name , city etc)
+
+ 
 
 Solution : 
 Created Functions which can be triggered with admin Api's or cron job as soon as Exam is expired (parameter of Exam table).
